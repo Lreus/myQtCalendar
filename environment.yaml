@@ -1,0 +1,9 @@
+name: my-qt-calendar
+channels:
+  - conda-forge
+  - pkgs/main
+dependencies:
+  - pyqt
+  - python=3.12
+  - weasyprint
+

@@ -1,0 +1,48 @@
+name: PyQt CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Micromamba
+        uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: environment.yaml
+          init-shell: bash
+          cache-environment: true
+          post-cleanup: all
+
+      - name: Unit tests
+        run: python -m unittest
+        shell: micromamba-shell {0}
+
+#      then adapt following to compile, deploy run end-to-end tests and upload binary
+#      - name: Compile PyQt Application
+#        run: pyinstaller your_pyqt_script.py # Or your compilation command
+#
+#      - name: Deploy to Ubuntu Container
+#        uses: docker://ubuntu:latest
+#        with:
+#          entrypoint: /bin/bash
+#          args: -c "apt-get update && apt-get install -y <dependencies> && cp dist/your_pyqt_executable /app && /app/your_pyqt_executable"
+#
+#      - name: Run End-to-End Tests
+#        run: python end_to_end_tests.py
+#
+#      - name: Upload Binary Artifact
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: pyqt-app-v${{ github.run_number }}
+#          path: dist/your_pyqt_executable # Or your binary path
